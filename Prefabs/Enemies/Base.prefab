@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 1
   _invincibilityDuration: 0.3
-  _startingInvencibility: 0.5
+  _startingInvencibility: 1
   OnDeath:
     m_PersistentCalls:
       m_Calls: []

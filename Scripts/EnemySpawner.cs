@@ -37,10 +37,11 @@ namespace ProcGen2D.Sample
                 var spawnCount = _random.NextInt(prefab.SpawnCount.x, prefab.SpawnCount.y);
                 for (var i = 0; i < spawnCount; i++)
                 {
+                    var rect = _camera.pixelRect;
                     var spawnPos = _camera.ScreenToWorldPoint(
                         new Vector3(
-                            _random.NextFloat(Screen.width * prefab.Padding.x, Screen.width - Screen.width * prefab.Padding.y),
-                            Screen.height - 32f));
+                            _random.NextFloat(rect.x + rect.width * prefab.Padding.x, rect.x + rect.width - rect.width * prefab.Padding.y),
+                            rect.yMax + rect.height * 0.05f));
                     var enemy = Instantiate(prefab.Enemy, spawnPos, Quaternion.LookRotation(Vector3.forward, Vector3.down));
                 }
                 _lastSpawnTime = Time.timeSinceLevelLoad + _random.NextFloat(_spawnCooldown.x, _spawnCooldown.y);

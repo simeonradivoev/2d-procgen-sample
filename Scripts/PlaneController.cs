@@ -55,8 +55,9 @@ namespace ProcGen2D.Sample
 
         private void Update()
         {
-            var minCamera = _camera.ScreenToWorldPoint(new Vector3(0, 0));
-            var maxCamera = _camera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height));
+            var pixelRect = _camera.pixelRect;
+            var minCamera = _camera.ScreenToWorldPoint(pixelRect.min);
+            var maxCamera = _camera.ScreenToWorldPoint(pixelRect.max);
 
             var bounds = new Rect { min = minCamera + _collider.bounds.size, max = maxCamera - _collider.bounds.size };
 
