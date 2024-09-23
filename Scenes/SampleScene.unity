@@ -543,8 +543,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2051112174}
-  - {fileID: 1469716817}
   - {fileID: 1747896371}
   - {fileID: 251963462}
   - {fileID: 1121427154}
@@ -1839,10 +1837,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.18549345
-    y: 0
-    width: 0.6294095
-    height: 0.99999994
+    x: 0
+    y: 0.32236844
+    width: 1
+    height: 0.35526317
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -4706,7 +4704,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 154686746}
+  m_Father: {fileID: 2123457229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -5880,7 +5878,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 154686746}
+  m_Father: {fileID: 2123457229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -6410,6 +6408,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 154686746}
+  - {fileID: 2051112174}
+  - {fileID: 1469716817}
   - {fileID: 890129475}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

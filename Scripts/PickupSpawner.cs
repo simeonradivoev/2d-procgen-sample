@@ -50,13 +50,13 @@ namespace ProcGen2D.Sample
         {
             if (Random.value < _healthChance)
             {
-                var health = Instantiate(_healthPickup, Vector3.zero, Quaternion.identity, obj.transform);
+                var health = Instantiate(_healthPickup, Vector3.zero, Quaternion.identity, obj.Objects);
                 health.transform.localPosition = RandomPoint(obj.Chunk);
             }
 
             if (Random.value < _powerUpPickupChance)
             {
-                var powerUp = Instantiate(_powerUpPickup, Vector3.zero, Quaternion.identity, obj.transform);
+                var powerUp = Instantiate(_powerUpPickup, Vector3.zero, Quaternion.identity, obj.Objects);
                 powerUp.transform.localPosition = RandomPoint(obj.Chunk);
             }
         }
