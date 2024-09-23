@@ -78,7 +78,9 @@ namespace ProcGen2D.Sample
                 }
                 else
                 {
+#if UNITY_ANDROID || UNITY_IOS
                     Handheld.Vibrate();
+#endif
                 }
             }
             if (slowTime)
