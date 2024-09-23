@@ -26,6 +26,8 @@ namespace ProcGen2D.Sample
 
         public UnityEvent OnRandomBullet;
 
+        public UnityEvent OnDespawn;
+
         private Camera _camera;
 
         private Collider2D _collider;
@@ -50,7 +52,8 @@ namespace ProcGen2D.Sample
             _collider = GetComponentInChildren<Collider2D>();
             _input = GetComponent<PlaneInput>();
             _health = GetComponent<Health>();
-            _health.OnDeath.AddListener(OnDeath);
+            _health.OnDeath.AddListener(LeaveBullets);
+            OnDespawn.AddListener(LeaveBullets);
         }
 
         private void Update()
@@ -59,10 +62,12 @@ namespace ProcGen2D.Sample
             var minCamera = _camera.ScreenToWorldPoint(pixelRect.min);
             var maxCamera = _camera.ScreenToWorldPoint(pixelRect.max);
 
+            var worldWidth = (maxCamera.x - minCamera.x) / 64f; 
+
             var bounds = new Rect { min = minCamera + _collider.bounds.size, max = maxCamera - _collider.bounds.size };
 
             var position = (Vector2)transform.position;
-            position += (Vector2)transform.TransformDirection(new Vector2(_input.Horizontal, _input.Vertical) * _speed * Time.deltaTime);
+            position += (Vector2)transform.TransformDirection(_input.Movement * _speed * worldWidth * Time.deltaTime);
             if (_boundWithinView.x)
             {
                 position.x = Mathf.Clamp(position.x, bounds.xMin, bounds.xMax);
@@ -101,7 +106,8 @@ namespace ProcGen2D.Sample
 
         private void OnDestroy()
         {
-            _health.OnDeath.RemoveListener(OnDeath);
+            _health.OnDeath.RemoveListener(LeaveBullets);
+            OnDespawn.RemoveListener(LeaveBullets);
         }
 
         public void RandomBullet()
@@ -115,7 +121,7 @@ namespace ProcGen2D.Sample
             OnRandomBullet.Invoke();
         }
 
-        private void OnDeath()
+        private void LeaveBullets()
         {
             foreach (var bullet in _bullets)
             {

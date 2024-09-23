@@ -2,6 +2,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
+using Screen = UnityEngine.Device.Screen;
 
 namespace ProcGen2D.Sample
 {
@@ -34,6 +35,9 @@ namespace ProcGen2D.Sample
         [SerializeField]
         private TMP_Text _gameOverScore;
 
+        [SerializeField]
+        private RectTransform _safeArea;
+
         private PlaneController _controller;
 
         private Health _health;
@@ -59,6 +63,15 @@ namespace ProcGen2D.Sample
             {
                 Time.timeScale = 0;
             }
+
+            var safeArea = Screen.safeArea;
+            safeArea.xMin /= Screen.width;
+            safeArea.xMax /= Screen.width;
+            safeArea.yMin /= Screen.height;
+            safeArea.yMax /= Screen.height;
+
+            _safeArea.anchorMin = safeArea.min;
+            _safeArea.anchorMax = safeArea.max;
         }
     }
 }

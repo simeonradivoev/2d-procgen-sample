@@ -40,7 +40,7 @@ namespace ProcGen2D.Sample
             _propertyBlock.SetFloat(Invincibility, _health.IsInvincible ? 1 : 0);
             _propertyBlock.SetFloat(Hit, _health.InCooldown ? 1 : 0);
             _renderer.SetPropertyBlock(_propertyBlock);
-            _rotation = Mathf.SmoothDampAngle(_rotation, _input.Horizontal * _turnAmount, ref _turnVelocity, _turnSpeed);
+            _rotation = Mathf.SmoothDampAngle(_rotation, _input.Movement.x * _turnAmount, ref _turnVelocity, _turnSpeed);
             _renderer.transform.localRotation = Quaternion.Euler(0, 0, _rotation);
         }
     }

@@ -50,7 +50,7 @@ Material:
     - _PixelSize: 4
     - _Scale: 16
     - _Speed: -0.2
-    - _Width: 0.6
+    - _Width: 0.1
     m_Colors:
     - _Alpha_Range: {r: 0, g: 1, b: 0, a: 0}
     - _Cloud1: {r: 1, g: 1, b: 1, a: 0.8}

@@ -51,7 +51,7 @@ namespace ProcGen2D.Sample
 
             var currentChunk =
                 _tilemapGenerator.WorldToChunkIndex(new float2(_world.transform.localPosition.x, math.abs(_world.transform.localPosition.y)));
-            var min = currentChunk.x - _chunkDistance.x;
+            var min = currentChunk.y - _chunkDistance.x;
             var max = currentChunk.y + _chunkDistance.y;
 
             for (var y = min; y <= max; y++)
@@ -68,6 +68,7 @@ namespace ProcGen2D.Sample
                 if (chunk.Key.y < min && _tilemapGenerator.DisposingChunks.Count <= 0)
                 {
                     StartCoroutine(_tilemapGenerator.DisposeAsync(chunk.Key));
+                    break;
                 }
             }
         }

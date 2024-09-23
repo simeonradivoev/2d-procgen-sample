@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Screen = UnityEngine.Device.Screen;
 
 namespace ProcGen2D.Sample
 {
@@ -16,8 +18,12 @@ namespace ProcGen2D.Sample
 
         private Vector3 _startingCameraPosition;
 
+        private Controls _controls;
+
         private void Start()
         {
+            _controls = new Controls();
+            _controls.Enable();
             _camera = Camera.main;
             _startingCameraPosition = _camera.transform.position;
             _input = GetComponent<PlaneInput>();
@@ -29,30 +35,52 @@ namespace ProcGen2D.Sample
 
         private void Update()
         {
-            _input.Horizontal = Input.GetAxis("Horizontal");
-            _input.Vertical = Input.GetAxis("Vertical");
-            _input.Shoot = Input.GetAxis("Fire1");
+            _input.Movement = _controls.Player.Movement.ReadValue<Vector2>();
+            var touchMovement = _controls.Player.TouchMovement.ReadValue<Vector2>();
+            if (Time.deltaTime > 0)
+            {
+                touchMovement.x /= Screen.dpi * Time.deltaTime;
+                touchMovement.y /= Screen.dpi * Time.deltaTime;
+            }
+
+            _input.Movement += touchMovement;
+            //touchMovement.x /= Screen.width * 0.5f * Time.deltaTime;
+            //touchMovement.y /= Screen.width * 0.5f * Time.deltaTime;
+            //_input.Movement += (_controls.Player.TouchPosition.ReadValue<Vector2>() - _controls.Player.TouchStart.ReadValue<Vector2>()).normalized * _controls.Player.Touch.ReadValue<float>();
+            _input.Shoot = _controls.Player.Shoot.ReadValue<float>();
         }
 
         private void OnDestroy()
         {
+            _controls.Disable();
             _health.OnDamage.RemoveListener(HealthOnOnDamage);
             _placneController.OnHitLand.RemoveListener(OnHitLand);
         }
 
         private void OnHitLand(Vector3 arg0)
         {
-            StartCoroutine(CameraShake(false, Vector3.up));
+            StartCoroutine(CameraShake(false, false, Vector3.up));
         }
 
         private void HealthOnOnDamage(Health.DamageParams obj)
         {
-            StartCoroutine(CameraShake(true, Vector3.right));
+            StartCoroutine(CameraShake(true, true, Vector3.right));
         }
 
-        private IEnumerator CameraShake(bool slowTime, Vector3 direction)
+        private IEnumerator CameraShake(bool slowTime, bool haptics, Vector3 direction)
         {
             var startingTime = Time.unscaledTime;
+            if (haptics)
+            {
+                if (Gamepad.current != null)
+                {
+                    Gamepad.current.SetMotorSpeeds(0.75f,0.75f);
+                }
+                else
+                {
+                    Handheld.Vibrate();
+                }
+            }
             if (slowTime)
             {
                 Time.timeScale = 0.5f;
@@ -62,6 +90,13 @@ namespace ProcGen2D.Sample
                 var time = (Time.timeSinceLevelLoad - startingTime) / 0.2f;
                 _camera.transform.position += direction * Mathf.Sin(time * Mathf.PI * 2) * 0.1f;
                 yield return new WaitForEndOfFrame();
+            }
+            if (haptics)
+            {
+                if (Gamepad.current != null)
+                {
+                    Gamepad.current.ResetHaptics();
+                }
             }
             if (slowTime)
             {

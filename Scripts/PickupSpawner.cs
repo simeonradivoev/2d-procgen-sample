@@ -21,8 +21,11 @@ namespace ProcGen2D.Sample
         [SerializeField]
         private TilemapGenerator _tilemapGenerator;
 
+        private Camera _camera;
+
         private void Start()
         {
+            _camera = Camera.main;
             _tilemapGenerator.OnChunkGenerated += OnChunkGenerated;
         }
 
@@ -31,24 +34,30 @@ namespace ProcGen2D.Sample
             _tilemapGenerator.OnChunkGenerated += OnChunkGenerated;
         }
 
+        private Vector2 RandomPoint(int2 chunk)
+        {
+            var cameraRect = _camera.pixelRect;
+            var worldMin = _camera.ScreenToWorldPoint(cameraRect.min);
+            var worldMax = _camera.ScreenToWorldPoint(cameraRect.max);
+            
+            var x = Random.Range(worldMin.x, worldMax.x);
+            var y = _tilemapGenerator.ChunkToWorld(Random.Range(0, _tilemapGenerator.ChunkSize.y)).y;
+
+            return new Vector2(x, y);
+        }
+
         private void OnChunkGenerated(TilemapChunk obj)
         {
             if (Random.value < _healthChance)
             {
                 var health = Instantiate(_healthPickup, Vector3.zero, Quaternion.identity, obj.transform);
-                health.transform.localPosition = new float3(
-                    Random.Range(4, _tilemapGenerator.ChunkSize.x - 4),
-                    Random.Range(0, _tilemapGenerator.ChunkSize.y),
-                    0);
+                health.transform.localPosition = RandomPoint(obj.Chunk);
             }
 
             if (Random.value < _powerUpPickupChance)
             {
                 var powerUp = Instantiate(_powerUpPickup, Vector3.zero, Quaternion.identity, obj.transform);
-                powerUp.transform.localPosition = new float3(
-                    Random.Range(4, _tilemapGenerator.ChunkSize.x - 4),
-                    Random.Range(0, _tilemapGenerator.ChunkSize.y),
-                    0);
+                powerUp.transform.localPosition = RandomPoint(obj.Chunk);
             }
         }
     }
